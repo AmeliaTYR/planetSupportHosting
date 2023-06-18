@@ -9,7 +9,7 @@
 
         <div id="messages-container">
             <h2>Messages</h2>
-            
+
             <!-- Top image -->
             <img id="topImage" src="../assets/top.png" alt="Top Image">
 
@@ -44,6 +44,10 @@ import planetaryjs from 'planetary.js'
 import d3 from 'd3'
 import axios from 'axios'
 
+// import the style from './PlanetPage.css'
+import './PlanetPage.css'
+
+
 const jsonFilePath = 'https://raw.githubusercontent.com/PrideHacks-2023/planetaryFiles/main/world-110m.json'
 
 var messageInterval = null;
@@ -55,7 +59,7 @@ async function getMessages(planet) {
     // Do a http get request to the backend using axios
     // return the response
 
-    await axios.get('http://143.198.81.168:5000/msg', {
+    await axios.get('https://planetsupport.tech/msg', {
         headers: {
         }
     }).then((response) => {
@@ -77,7 +81,7 @@ async function getMessages(planet) {
                     messageTitle: response.data[i].username,
                     messageTime: response.data[i].timestamp
                 }
-                
+
                 messages.push(messageInfo)
             }
 
@@ -91,6 +95,13 @@ async function getMessages(planet) {
                 // Create a new message div
                 var newMessage = document.createElement('div')
                 newMessage.classList.add('message')
+
+                // // If not the first message, add a divider
+                // if (numMessages != response.data.length) {
+                //     var divider = document.createElement('hr')
+                //     divider.classList.add('message-divider')
+                //     newMessage.appendChild(divider)
+                // }
 
                 // Create the message header
                 var newMessageHeader = document.createElement('div')
@@ -139,8 +150,8 @@ async function getMessages(planet) {
                 newMessage.appendChild(newMessageBody)
                 newMessage.appendChild(newMessageFooter)
 
-                newMessage.classList.add('message')
-                
+
+
                 // Add the message to the messages container
                 document.getElementById('messages').appendChild(newMessage)
 
@@ -163,11 +174,11 @@ async function getMessages(planet) {
 
                 // Ping the location
                 planet.plugins.worldPings.add(randomLocation[1], randomLocation[0], {
-                    color:  rainbowColorsPastel[Math.floor(Math.random() * rainbowColorsPastel.length)],
+                    color: rainbowColorsPastel[Math.floor(Math.random() * rainbowColorsPastel.length)],
                     ttl: 2000,
                     angle: Math.random() * 10
                 })
-            }, 1000)
+            }, 400)
 
             // this.$refs.messagesContainer)
 
@@ -323,17 +334,6 @@ export default {
 
         planet.draw(canvas);
 
-
-        // // Every few hundred milliseconds, we'll draw another random ping.
-        // var colors = ['red', 'yellow', 'white', 'orange', 'green', 'cyan', 'pink'];
-        // setInterval(function () {
-        //     var lat = Math.random() * 170 - 85;
-        //     var lng = Math.random() * 360 - 180;
-        //     var color = colors[Math.floor(Math.random() * colors.length)];
-        //     planet.plugins.worldPings.add(lng, lat, { color: color, ttl: 2000, angle: Math.random() * 10 });
-
-        // }, 200);
-
         getMessages(planet);
 
     }
@@ -374,7 +374,7 @@ export default {
     height: 80vh;
     text-align: left;
     margin: 50px;
-    padding: 10px 20px 20px 20px;
+    padding: 0px 20px 20px 20px;
 
     color: #6ccfcf;
     font-family: monospace;
@@ -388,10 +388,7 @@ export default {
 #topImage {
     width: 20vw;
     height: 20px;
-    /* border-radius: 1rem;
-    background: #1404624c;
-    -webkit-backdrop-filter: blur(3px);
-    backdrop-filter: blur(3px); */
+
     margin-bottom: 10px;
 }
 
@@ -411,7 +408,7 @@ export default {
 }
 
 #messages {
-    height: 85%;
+    height: 80%;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -424,28 +421,46 @@ export default {
     border-radius: 1rem;
     border-color: #35c5c5c3;
     border-style: solid;
-    border-width: 1px 0px 1px 0px;    
+    border-width: 1px 0px 1px 0px;
+}
+
+.message-divider {
+    width: 90%;
+    margin-bottom: 10px;
+    border-radius: 1rem;
+    border-color: #35c5c5c3;
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+}
+
+.message:hover {
+    background: #35c5c5c3;
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+}
+
+.message-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #058ea0a4; 
+    background: #058ea0a4;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #60c7d1; 
+    background: #60c7d1;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #187e87; 
+    background: #187e87;
 }
-
-
-
 </style>
